@@ -18,6 +18,7 @@ namespace QuanLySinhvien
         public string masv;
         public string khoa;
         public string diemtrungbinhmon;
+        public string xeploai;
         public Baocao()
         {
             InitializeComponent();
@@ -34,6 +35,7 @@ namespace QuanLySinhvien
             rpc.Add(new ReportParameter("khoa", khoa));
             rpc.Add(new ReportParameter("masv", masv));
             rpc.Add(new ReportParameter("diemtrungbinhmon", diemtrungbinhmon));
+            rpc.Add(new ReportParameter("xeploai", xeploai));
             sinhvien sv = new sinhvien();
             sv.tenmon = "1";
             sv.tensv = "1";

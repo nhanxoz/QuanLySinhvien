@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Text.RegularExpressions;
+using System.Drawing.Imaging;
+using WinFormsApp1;
 
 namespace QuanLySinhvien
 {
@@ -24,7 +26,13 @@ namespace QuanLySinhvien
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            DataTable dt = this.GetData("SELECT TenKhoa, makhoa FROM khoa");
+            Form3 f3 = new Form3();
+            f3.ShowDialog();
+            if (Form3.isvalid == 0)
+            {
+                this.Dispose();
+            }
+            DataTable dt = GetData("SELECT TenKhoa, makhoa FROM khoa");
             this.PopulateTreeView(dt, null);
         }
 
@@ -41,7 +49,7 @@ namespace QuanLySinhvien
                 if (treeNode == null)
                 {
                     treeView1.Nodes.Add(child);
-                    DataTable dtChild = this.GetData("SELECT tenlop, malop FROM Lophoc WHERE makhoa = \'" + child.Tag+"\'");
+                    DataTable dtChild = GetData("SELECT tenlop, malop FROM Lophoc WHERE makhoa = \'" + child.Tag+"\'");
                     PopulateTreeView(dtChild, child);
                 }
                 else
@@ -54,7 +62,7 @@ namespace QuanLySinhvien
             }
         }
 
-        private DataTable GetData(string query)
+        static public DataTable GetData(string query)
         {
             DataTable dt = new DataTable();
             string constr = @"Data Source=LAPTOP-3IINN1IQ;Initial Catalog=SINHVIEN;Integrated Security=True";
@@ -91,7 +99,7 @@ namespace QuanLySinhvien
                 query = $"select hoten, diachi, masv, sinhvien.malop from sinhvien, lophoc , khoa where sinhvien.malop = lophoc.malop and lophoc.makhoa = khoa.makhoa and lophoc.tenlop = N\'{choose2}\' and khoa.tenkhoa = N\'{choose1}\'";
             }
             
-            DataTable dt = this.GetData(query);
+            DataTable dt = GetData(query);
             dataGridView1.DataSource = dt;
         }
 
@@ -115,8 +123,8 @@ namespace QuanLySinhvien
             }
             catch (Exception) { };
             
-            string query = $"select  tenmon, diemthuongxuyen, diemchuyencan, diemcuoiky, diemtongket from bangdiem, MONHOC where bangdiem.mamon = monhoc.mamon and masv =\'{idsinhvien}\'";
-            System.Data.DataTable dt = this.GetData(query);
+            string query = $"select  bangdiem.mamon, tenmon, diemthuongxuyen, diemchuyencan, diemcuoiky, diemtongket from bangdiem, MONHOC where bangdiem.mamon = monhoc.mamon and masv =\'{idsinhvien}\'";
+            System.Data.DataTable dt = GetData(query);
             dataGridView2.Refresh();
             dataGridView2.DataSource = dt;
 
@@ -138,12 +146,15 @@ namespace QuanLySinhvien
             bc.tensv = dataGridView1.SelectedRows[0].Cells[0].Value.ToString();
             bc.diachi = dataGridView1.SelectedRows[0].Cells[1].Value.ToString();
             bc.khoa = dataGridView1.SelectedRows[0].Cells[3].Value.ToString();
-            string query = $"select format(avg(diemtongket),'N2') from bangdiem where masv=\'{idsinhvien}\'";
-            DataTable dt1 = this.GetData(query);
+            
+            string query = $"select format(sum(diemtongket * SOTINCHI) / sum (sotinchi),'N2') from bangdiem, monhoc where bangdiem.mamon = monhoc.mamon and masv = \'{idsinhvien}\'";
+            DataTable dt1 = GetData(query);
             bc.diemtrungbinhmon = dt1.Rows[0][0].ToString();
-            query = $"select  tenmon, diemthuongxuyen, diemchuyencan, diemcuoiky, diemtongket from bangdiem, MONHOC where bangdiem.mamon = monhoc.mamon and masv =\'{idsinhvien}\'";
-            System.Data.DataTable dt = this.GetData(query) ;
-            dataGridView2.DataSource = dt;
+            query = $"select xeploai.xeploai from xeploai where {bc.diemtrungbinhmon} between tu and den ";
+            bc.xeploai = GetData(query).Rows[0][0].ToString();
+            query = $"select  tenmon, diemchuyencan, diemthuongxuyen, diemcuoiky, diemtongket from bangdiem, MONHOC where bangdiem.mamon = monhoc.mamon and masv =\'{idsinhvien}\'";
+            System.Data.DataTable dt = GetData(query) ;
+            
             bc.dataTable = dt;
             
             Microsoft.Reporting.WinForms.ReportDataSource rprtDTSource = new Microsoft.Reporting.WinForms.ReportDataSource(dt.TableName, dt);
@@ -171,9 +182,26 @@ namespace QuanLySinhvien
         private void button_xoa_Click(object sender, EventArgs e)
         {
             string query;
-            string id = dataGridView1.SelectedRows[0].Cells[2].Value.ToString();
+            string id = "";
+            try { id = dataGridView1.SelectedRows[0].Cells[2].Value.ToString();} catch { MessageBox.Show("Bản ghi không hợp lệ"); return; }
+            
             query = $"delete from sinhvien where masv = \'{id}\'";
-            this.GetData(query);
+            GetData(query);
+            string choose1 = treeView1.SelectedNode.FullPath.Split('\\')[0];
+            string choose2 = null;
+            try { choose2 = treeView1.SelectedNode.FullPath.Split('\\')[1]; }
+            catch (Exception) { }
+            if (choose2 == null)
+            {
+                query = $"select hoten, diachi, masv, sinhvien.malop from sinhvien, lophoc , khoa where sinhvien.malop = lophoc.malop and lophoc.makhoa = khoa.makhoa and khoa.tenkhoa = N\'{choose1}\'";
+            }
+            else
+            {
+                query = $"select hoten, diachi, masv, sinhvien.malop from sinhvien, lophoc , khoa where sinhvien.malop = lophoc.malop and lophoc.makhoa = khoa.makhoa and lophoc.tenlop = N\'{choose2}\' and khoa.tenkhoa = N\'{choose1}\'";
+            }
+            System.Data.DataTable dt = GetData(query);
+            dataGridView1.DataSource = dt;
+            dataGridView1.Refresh();
         }
 
         private void button_sua_Click(object sender, EventArgs e)
@@ -186,7 +214,7 @@ namespace QuanLySinhvien
             query = $"update sinhvien " +
                 $"set hoten = N\'{tensv}\', diachi = N\'{diachi}\', malop =\'{malop}\', masv =\'{textBox_MaSV.Text}\'" +
                 $"where masv = \'{id}\' ";
-            this.GetData(query);
+            GetData(query);
             string choose1 = treeView1.SelectedNode.FullPath.Split('\\')[0];
             string choose2 = null;
             try { choose2 = treeView1.SelectedNode.FullPath.Split('\\')[1]; }
@@ -201,7 +229,7 @@ namespace QuanLySinhvien
             {
                 query = $"select hoten, diachi, masv, sinhvien.malop from sinhvien, lophoc , khoa where sinhvien.malop = lophoc.malop and lophoc.makhoa = khoa.makhoa and lophoc.tenlop = N\'{choose2}\' and khoa.tenkhoa = N\'{choose1}\'";
             }
-            System.Data.DataTable dt = this.GetData(query);
+            System.Data.DataTable dt = GetData(query);
             dataGridView1.DataSource = dt;
             dataGridView1.Refresh();
             
@@ -255,6 +283,122 @@ namespace QuanLySinhvien
                 e.Cancel = false;
                 errorProvider1.SetError(textBox_cuoiky, null);
             }
+        }
+
+        private void dataGridView2_SelectionChanged(object sender, EventArgs e)
+        {
+            DataGridView dgv = (DataGridView)sender;
+            //string idsinhvien = "None";
+            //User selected WHOLE ROW (by clicking in the margin)
+            //if (dgv.SelectedRows.Count > 0)
+            //{
+            //    idsinhvien = dgv.SelectedRows[0].Cells[2].Value.ToString();
+
+
+            //}
+            try
+            {
+                textBox_mamon.Text = dgv.SelectedRows[0].Cells[0].Value.ToString();
+                textBox_chuyencan.Text = dgv.SelectedRows[0].Cells[2].Value.ToString();
+                textBox_thuongxuyen.Text = dgv.SelectedRows[0].Cells[3].Value.ToString();
+                textBox_cuoiky.Text = dgv.SelectedRows[0].Cells[4].Value.ToString();
+                
+            }
+            catch (Exception) { };
+        }
+
+        private void button_sua_diem_Click(object sender, EventArgs e)
+        {
+            string query;
+            string id = dataGridView1.SelectedRows[0].Cells[2].Value.ToString();
+            string mamon = textBox_mamon.Text;
+            string diemtongket = ((double.Parse(textBox_chuyencan.Text) * 0.1 + 0.3 * double.Parse(textBox_thuongxuyen.Text) + 0.6 * double.Parse(textBox_cuoiky.Text))).ToString();
+            query = $"update bangdiem " +
+    $"set diemchuyencan = {textBox_chuyencan.Text}, diemthuongxuyen = {textBox_thuongxuyen.Text}, diemcuoiky ={textBox_cuoiky.Text}, diemtongket ={diemtongket}" +
+    $"where masv = \'{id}\' and mamon = \'{mamon}\'";
+            GetData(query);
+            query = $"select  bangdiem.mamon, tenmon, diemchuyencan, diemthuongxuyen, diemcuoiky, diemtongket from bangdiem, MONHOC where bangdiem.mamon = monhoc.mamon and masv =\'{id}\'";
+            System.Data.DataTable dt = GetData(query);
+            dataGridView2.Refresh();
+            dataGridView2.DataSource = dt;
+        }
+
+        private void button_themDiem_Click(object sender, EventArgs e)
+        {
+            string query;
+            string id = dataGridView1.SelectedRows[0].Cells[2].Value.ToString();
+            string mamon = textBox_mamon.Text;
+
+            string diemtongket = ((double.Parse(textBox_chuyencan.Text)*0.1 + 0.3*double.Parse(textBox_thuongxuyen.Text) + 0.6*double.Parse(textBox_cuoiky.Text))).ToString();
+            query = $"insert into bangdiem(diemchuyencan, diemthuongxuyen, diemcuoiky, diemtongket, masv, mamon) values " +
+    $"({textBox_chuyencan.Text}, {textBox_thuongxuyen.Text},{textBox_cuoiky.Text}, {diemtongket}," +
+    $"\'{id}\', \'{mamon}\')";
+            try { GetData(query); }catch { MessageBox.Show("Xem lại mã sinh viên và mã môn học"); }
+            query = $"select  bangdiem.mamon, tenmon, diemchuyencan, diemthuongxuyen, diemcuoiky, diemtongket from bangdiem, MONHOC where bangdiem.mamon = monhoc.mamon and masv =\'{id}\'";
+            System.Data.DataTable dt = GetData(query);
+            dataGridView2.Refresh();
+            dataGridView2.DataSource = dt;
+        }
+
+        private void button_them_Click(object sender, EventArgs e)
+        {
+            string query;
+            string id = dataGridView1.SelectedRows[0].Cells[2].Value.ToString();
+            string tensv = textBox_HoTen.Text;
+            string diachi = textBox_diachi.Text;
+            string malop = textBox_Malop.Text;
+            query = $"insert into sinhvien(hoten, DIACHI, MALOP, MASV) values " +
+                $"(N'{tensv}\',N'{diachi}\','{malop}\','{textBox_MaSV.Text}\')";
+            try { GetData(query); } catch { MessageBox.Show("Kiểm tra lại mã sinh viên và mã lớp"); }
+            string choose1 = treeView1.SelectedNode.FullPath.Split('\\')[0];
+            string choose2 = null;
+            try { choose2 = treeView1.SelectedNode.FullPath.Split('\\')[1]; }
+            catch (Exception) { }
+
+
+            if (choose2 == null)
+            {
+                query = $"select hoten, diachi, masv, sinhvien.malop from sinhvien, lophoc , khoa where sinhvien.malop = lophoc.malop and lophoc.makhoa = khoa.makhoa and khoa.tenkhoa = N\'{choose1}\'";
+            }
+            else
+            {
+                query = $"select hoten, diachi, masv, sinhvien.malop from sinhvien, lophoc , khoa where sinhvien.malop = lophoc.malop and lophoc.makhoa = khoa.makhoa and lophoc.tenlop = N\'{choose2}\' and khoa.tenkhoa = N\'{choose1}\'";
+            }
+            System.Data.DataTable dt = GetData(query);
+            dataGridView1.DataSource = dt;
+            dataGridView1.Refresh();
+
+        }
+
+        private void reportABugToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Rectangle bounds = Screen.GetBounds(Point.Empty);
+            using (Bitmap bitmap = new Bitmap(bounds.Width, bounds.Height))
+            {
+                using (Graphics g = Graphics.FromImage(bitmap))
+                {
+                    g.CopyFromScreen(Point.Empty, Point.Empty, bounds.Size);
+                }
+                bitmap.Save("test.jpg", ImageFormat.Jpeg);
+
+            }
+            Form2 frm = new Form2();
+            frm.ShowDialog();
+        }
+        static public void BugSplat()
+        {
+            Rectangle bounds = Screen.GetBounds(Point.Empty);
+            using (Bitmap bitmap = new Bitmap(bounds.Width, bounds.Height))
+            {
+                using (Graphics g = Graphics.FromImage(bitmap))
+                {
+                    g.CopyFromScreen(Point.Empty, Point.Empty, bounds.Size);
+                }
+                bitmap.Save("test.jpg", ImageFormat.Jpeg);
+
+            }
+            Form2 frm = new Form2();
+            frm.ShowDialog();
         }
     }
 }

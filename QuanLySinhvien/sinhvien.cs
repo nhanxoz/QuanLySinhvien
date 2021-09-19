@@ -9,6 +9,7 @@ namespace QuanLySinhvien
     class sinhvien
     {
         public string tensv { set; get; }
+        public string mamon { set; get; }
         public string tenmon { set; get; }
         public float diemthuongxuyen { set; get; }
         public float diemchuyencan { set; get; }

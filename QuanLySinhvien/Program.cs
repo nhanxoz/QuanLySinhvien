@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WinFormsApp1;
 
 namespace QuanLySinhvien
 {
@@ -16,7 +17,8 @@ namespace QuanLySinhvien
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            try { Application.Run(new Form1()); } catch { Form1.BugSplat(); }
+            
         }
     }
 }
