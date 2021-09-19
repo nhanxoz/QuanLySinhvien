@@ -38,7 +38,6 @@ namespace QuanLySinhvien
             this.button_them = new System.Windows.Forms.Button();
             this.button_sua = new System.Windows.Forms.Button();
             this.button_xoa = new System.Windows.Forms.Button();
-            this.button_xuatExcel = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -76,6 +75,7 @@ namespace QuanLySinhvien
             this.searchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.reportABugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textBox_mamon = new System.Windows.Forms.TextBox();
             this.textBox_chuyencan = new System.Windows.Forms.TextBox();
             this.textBox_thuongxuyen = new System.Windows.Forms.TextBox();
@@ -85,6 +85,7 @@ namespace QuanLySinhvien
             this.button_sua_diem = new System.Windows.Forms.Button();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.mamon = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.monhoc = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.chuyencan = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.thuongxuyen = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -145,6 +146,7 @@ namespace QuanLySinhvien
             this.button_them.TabIndex = 4;
             this.button_them.Text = "Thêm";
             this.button_them.UseVisualStyleBackColor = true;
+            this.button_them.Click += new System.EventHandler(this.button_them_Click);
             // 
             // button_sua
             // 
@@ -167,16 +169,6 @@ namespace QuanLySinhvien
             this.button_xoa.Text = "Xóa";
             this.button_xoa.UseVisualStyleBackColor = true;
             this.button_xoa.Click += new System.EventHandler(this.button_xoa_Click);
-            // 
-            // button_xuatExcel
-            // 
-            this.button_xuatExcel.Location = new System.Drawing.Point(942, 286);
-            this.button_xuatExcel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.button_xuatExcel.Name = "button_xuatExcel";
-            this.button_xuatExcel.Size = new System.Drawing.Size(314, 40);
-            this.button_xuatExcel.TabIndex = 7;
-            this.button_xuatExcel.Text = "Xuất EXCEL";
-            this.button_xuatExcel.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -251,7 +243,7 @@ namespace QuanLySinhvien
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1295, 30);
+            this.menuStrip1.Size = new System.Drawing.Size(1295, 28);
             this.menuStrip1.TabIndex = 23;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -269,7 +261,7 @@ namespace QuanLySinhvien
             this.toolStripSeparator2,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 26);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 24);
             this.fileToolStripMenuItem.Text = "&File";
             // 
             // newToolStripMenuItem
@@ -355,7 +347,7 @@ namespace QuanLySinhvien
             this.toolStripSeparator4,
             this.selectAllToolStripMenuItem});
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(49, 26);
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(49, 24);
             this.editToolStripMenuItem.Text = "&Edit";
             // 
             // undoToolStripMenuItem
@@ -421,7 +413,7 @@ namespace QuanLySinhvien
             this.customizeToolStripMenuItem,
             this.optionsToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(58, 26);
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(58, 24);
             this.toolsToolStripMenuItem.Text = "&Tools";
             // 
             // customizeToolStripMenuItem
@@ -443,39 +435,47 @@ namespace QuanLySinhvien
             this.indexToolStripMenuItem,
             this.searchToolStripMenuItem,
             this.toolStripSeparator5,
-            this.aboutToolStripMenuItem});
+            this.aboutToolStripMenuItem,
+            this.reportABugToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(55, 26);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(55, 24);
             this.helpToolStripMenuItem.Text = "&Help";
             // 
             // contentsToolStripMenuItem
             // 
             this.contentsToolStripMenuItem.Name = "contentsToolStripMenuItem";
-            this.contentsToolStripMenuItem.Size = new System.Drawing.Size(150, 26);
+            this.contentsToolStripMenuItem.Size = new System.Drawing.Size(179, 26);
             this.contentsToolStripMenuItem.Text = "&Contents";
             // 
             // indexToolStripMenuItem
             // 
             this.indexToolStripMenuItem.Name = "indexToolStripMenuItem";
-            this.indexToolStripMenuItem.Size = new System.Drawing.Size(150, 26);
+            this.indexToolStripMenuItem.Size = new System.Drawing.Size(179, 26);
             this.indexToolStripMenuItem.Text = "&Index";
             // 
             // searchToolStripMenuItem
             // 
             this.searchToolStripMenuItem.Name = "searchToolStripMenuItem";
-            this.searchToolStripMenuItem.Size = new System.Drawing.Size(150, 26);
+            this.searchToolStripMenuItem.Size = new System.Drawing.Size(179, 26);
             this.searchToolStripMenuItem.Text = "&Search";
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(147, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(176, 6);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(150, 26);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(179, 26);
             this.aboutToolStripMenuItem.Text = "&About...";
+            // 
+            // reportABugToolStripMenuItem
+            // 
+            this.reportABugToolStripMenuItem.Name = "reportABugToolStripMenuItem";
+            this.reportABugToolStripMenuItem.Size = new System.Drawing.Size(179, 26);
+            this.reportABugToolStripMenuItem.Text = "Report a Bug";
+            this.reportABugToolStripMenuItem.Click += new System.EventHandler(this.reportABugToolStripMenuItem_Click);
             // 
             // textBox_mamon
             // 
@@ -542,6 +542,7 @@ namespace QuanLySinhvien
             this.button_sua_diem.TabIndex = 26;
             this.button_sua_diem.Text = "Sửa";
             this.button_sua_diem.UseVisualStyleBackColor = true;
+            this.button_sua_diem.Click += new System.EventHandler(this.button_sua_diem_Click);
             // 
             // treeView1
             // 
@@ -559,6 +560,7 @@ namespace QuanLySinhvien
             this.dataGridView2.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView2.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.mamon,
             this.monhoc,
             this.chuyencan,
             this.thuongxuyen,
@@ -570,8 +572,19 @@ namespace QuanLySinhvien
             this.dataGridView2.ReadOnly = true;
             this.dataGridView2.RowHeadersWidth = 51;
             this.dataGridView2.RowTemplate.Height = 29;
+            this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView2.Size = new System.Drawing.Size(904, 123);
             this.dataGridView2.TabIndex = 29;
+            this.dataGridView2.SelectionChanged += new System.EventHandler(this.dataGridView2_SelectionChanged);
+            // 
+            // mamon
+            // 
+            this.mamon.DataPropertyName = "mamon";
+            this.mamon.HeaderText = "Mã Môn học";
+            this.mamon.MinimumWidth = 6;
+            this.mamon.Name = "mamon";
+            this.mamon.ReadOnly = true;
+            this.mamon.Width = 125;
             // 
             // monhoc
             // 
@@ -680,6 +693,7 @@ namespace QuanLySinhvien
             // errorProvider1
             // 
             this.errorProvider1.ContainerControl = this;
+            this.errorProvider1.Icon = ((System.Drawing.Icon)(resources.GetObject("errorProvider1.Icon")));
             // 
             // button_themDiem
             // 
@@ -689,6 +703,7 @@ namespace QuanLySinhvien
             this.button_themDiem.TabIndex = 31;
             this.button_themDiem.Text = "Thêm";
             this.button_themDiem.UseVisualStyleBackColor = true;
+            this.button_themDiem.Click += new System.EventHandler(this.button_themDiem_Click);
             // 
             // Form1
             // 
@@ -714,7 +729,6 @@ namespace QuanLySinhvien
             this.Controls.Add(this.textBox_thuongxuyen);
             this.Controls.Add(this.textBox_chuyencan);
             this.Controls.Add(this.textBox_mamon);
-            this.Controls.Add(this.button_xuatExcel);
             this.Controls.Add(this.button_xoa);
             this.Controls.Add(this.button_sua);
             this.Controls.Add(this.button_them);
@@ -748,7 +762,6 @@ namespace QuanLySinhvien
         private System.Windows.Forms.Button button_them;
         private System.Windows.Forms.Button button_sua;
         private System.Windows.Forms.Button button_xoa;
-        private System.Windows.Forms.Button button_xuatExcel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
@@ -795,11 +808,6 @@ namespace QuanLySinhvien
         private System.Windows.Forms.Button button_sua_diem;
         private System.Windows.Forms.TreeView treeView1;
         private System.Windows.Forms.DataGridView dataGridView2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn monhoc;
-        private System.Windows.Forms.DataGridViewTextBoxColumn chuyencan;
-        private System.Windows.Forms.DataGridViewTextBoxColumn thuongxuyen;
-        private System.Windows.Forms.DataGridViewTextBoxColumn cuoiky;
-        private System.Windows.Forms.DataGridViewTextBoxColumn tongket;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.DataGridViewTextBoxColumn hoten;
         private System.Windows.Forms.DataGridViewTextBoxColumn diachi;
@@ -807,6 +815,13 @@ namespace QuanLySinhvien
         private System.Windows.Forms.DataGridViewTextBoxColumn malop;
         private System.Windows.Forms.ErrorProvider errorProvider1;
         private System.Windows.Forms.Button button_themDiem;
+        private System.Windows.Forms.DataGridViewTextBoxColumn mamon;
+        private System.Windows.Forms.DataGridViewTextBoxColumn monhoc;
+        private System.Windows.Forms.DataGridViewTextBoxColumn chuyencan;
+        private System.Windows.Forms.DataGridViewTextBoxColumn thuongxuyen;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cuoiky;
+        private System.Windows.Forms.DataGridViewTextBoxColumn tongket;
+        private System.Windows.Forms.ToolStripMenuItem reportABugToolStripMenuItem;
     }
 }
 

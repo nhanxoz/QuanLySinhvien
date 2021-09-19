@@ -209,7 +209,7 @@
             <Top>1.32917in</Top>
             <Left>2.55084in</Left>
             <Height>0.48333in</Height>
-            <Width>2.55in</Width>
+            <Width>2.19167in</Width>
             <ZIndex>3</ZIndex>
             <Style>
               <Border>
@@ -576,7 +576,7 @@
             <Top>4.15833in</Top>
             <Left>0.62418in</Left>
             <Height>0.5in</Height>
-            <Width>5.60999in</Width>
+            <Width>5.61in</Width>
             <ZIndex>4</ZIndex>
             <Style>
               <Border>
@@ -603,7 +603,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox4</rd:DefaultName>
-            <Top>1.99861in</Top>
+            <Top>2.04666in</Top>
             <Left>0.94167in</Left>
             <Height>0.25in</Height>
             <Width>2.55in</Width>
@@ -671,10 +671,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox9</rd:DefaultName>
-            <Top>3.02167in</Top>
+            <Top>2.92166in</Top>
             <Left>0.94167in</Left>
             <Height>0.25in</Height>
-            <Width>5.06667in</Width>
+            <Width>3.49167in</Width>
             <ZIndex>7</ZIndex>
             <Style>
               <Border>
@@ -705,7 +705,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox10</rd:DefaultName>
-            <Top>2.65778in</Top>
+            <Top>2.63in</Top>
             <Left>0.94167in</Left>
             <Height>0.25in</Height>
             <Width>1in</Width>
@@ -735,7 +735,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox12</rd:DefaultName>
-            <Top>3.405in</Top>
+            <Top>3.21333in</Top>
             <Left>0.94167in</Left>
             <Height>0.25in</Height>
             <Width>1in</Width>
@@ -769,11 +769,45 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox13</rd:DefaultName>
-            <Top>5.23in</Top>
-            <Left>1.105in</Left>
+            <Top>4.855in</Top>
+            <Left>0.62418in</Left>
             <Height>0.25in</Height>
             <Width>3.24167in</Width>
             <ZIndex>10</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="Textbox5">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>Xếp loại học kỳ: </Value>
+                    <Style />
+                  </TextRun>
+                  <TextRun>
+                    <Value>=Parameters!xeploai.Value</Value>
+                    <Style />
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox5</rd:DefaultName>
+            <Top>4.855in</Top>
+            <Left>4.42167in</Left>
+            <Height>0.25in</Height>
+            <Width>1.8125in</Width>
+            <ZIndex>11</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -831,11 +865,15 @@
       <DataType>String</DataType>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
+    <ReportParameter Name="xeploai">
+      <DataType>String</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
       <NumberOfColumns>4</NumberOfColumns>
-      <NumberOfRows>2</NumberOfRows>
+      <NumberOfRows>3</NumberOfRows>
       <CellDefinitions>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
@@ -876,6 +914,11 @@
           <ColumnIndex>3</ColumnIndex>
           <RowIndex>1</RowIndex>
           <ParameterName>diemtrungbinhmon</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>2</RowIndex>
+          <ParameterName>xeploai</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>
